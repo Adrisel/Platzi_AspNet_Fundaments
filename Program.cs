@@ -29,9 +29,25 @@ namespace Stage1
                 Name = "201",
                 TurnType = TurnType.Morning
             };
-            System.Console.WriteLine("--------------------------------");
-            System.Console.WriteLine($"{course1.Name}, {course1.Id}");
-            System.Console.WriteLine($"{course2.Name}, {course2.Id}");
+
+            //Create an array of curses
+
+            var arrayCourses = new Course[3];
+            arrayCourses[0] = course1;
+            arrayCourses[1] = course2;
+            arrayCourses[2] = course3;
+
+            ShowCourses(arrayCourses); 
+        }
+
+        private static void ShowCourses(Course[] arrayCourses)
+        {
+            int c = 0;
+            while (c < arrayCourses.Length)
+            {
+                System.Console.WriteLine($"Name {arrayCourses[c].Name} ID {arrayCourses[c].Id}");
+                c++;
+            }
         }
     }
 }
