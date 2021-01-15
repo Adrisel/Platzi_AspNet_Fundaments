@@ -15,6 +15,8 @@ namespace Stage1.Entities
 
         public SchoolType SchoolType { get; set; }
         public int YearFoundation { get; set; }
+
+        public Course[] Courses { get; set; }
         /// The properties are public because behind they set the value to a field, 
         //this is called encapsulation.
 

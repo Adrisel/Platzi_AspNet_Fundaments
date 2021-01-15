@@ -10,34 +10,30 @@ namespace Stage1
             School mySchool = new School("Platzi Academy", SchoolType.Elementary, city: "La Paz");
             System.Console.WriteLine(Convert.ToString(mySchool));
 
-            /// instance 3 courses
-
-            Course course1 = new Course()
+            Course[] arrayCourses =
             {
-                Name = "101",
-                TurnType = TurnType.Morning
+               new Course(){ Name = "101",TurnType = TurnType.Morning},
+               new Course(){ Name = "201",TurnType = TurnType.Morning},
+               new Course(){ Name = "301",TurnType = TurnType.Morning}
             };
 
-            Course course2 = new Course()
+            mySchool.Courses = arrayCourses;
+            ShowCourses(arrayCourses);
+            System.Console.WriteLine("---------------------------------");
+            ShowCoursesWithForeach(arrayCourses);
+            ShowSchoolCourses(mySchool);
+        }
+
+        private static void ShowSchoolCourses(School mySchool)
+        {
+            System.Console.WriteLine("School Courses-------------------");
+            if(mySchool?.Courses != null)
             {
-                Name = "201",
-                TurnType = TurnType.Morning
-            };
-
-            Course course3 = new Course()
-            {
-                Name = "201",
-                TurnType = TurnType.Morning
-            };
-
-            //Create an array of curses
-
-            var arrayCourses = new Course[3];
-            arrayCourses[0] = course1;
-            arrayCourses[1] = course2;
-            arrayCourses[2] = course3;
-
-            ShowCourses(arrayCourses); 
+                foreach (var course in mySchool.Courses)
+                {
+                    System.Console.WriteLine($"Name {course.Name} ID {course.Id}");
+                }
+            }
         }
 
         private static void ShowCourses(Course[] arrayCourses)
@@ -47,6 +43,14 @@ namespace Stage1
             {
                 System.Console.WriteLine($"Name {arrayCourses[c].Name} ID {arrayCourses[c].Id}");
                 c++;
+            }
+        }
+
+        private static void ShowCoursesWithForeach(Course[] arrayCourses)
+        {
+            foreach (var course in arrayCourses)
+            {
+                System.Console.WriteLine($"Name {course.Name} ID {course.Id}");
             }
         }
     }
