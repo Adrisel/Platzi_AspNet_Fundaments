@@ -1,6 +1,6 @@
 namespace Stage1.Entities
 {
-    enum SchoolType
+    public enum SchoolType
     {
         Elementary,
         Middle,

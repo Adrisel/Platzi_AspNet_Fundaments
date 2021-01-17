@@ -1,7 +1,7 @@
 namespace Stage1.Entities
 {
     using System.Collections.Generic;
-    class School
+    public class School
     {
         string name;
         public string Name
