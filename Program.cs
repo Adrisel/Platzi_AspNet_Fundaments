@@ -24,22 +24,26 @@ namespace Stage1
             List<Course> secondCourse = new List<Course>()
             {
                 new Course{Name = "401", TurnType=TurnType.Morning},
-                new Course{Name = "501", TurnType=TurnType.Morning}
+                new Course{Name = "501", TurnType=TurnType.Morning},
+                new Course{Name = "501", TurnType=TurnType.Night}
             };
 
             mySchool.Courses.AddRange(secondCourse);
 
             //Remove a element base on a predicate
-            Predicate<Course> predicateMatch = PredicateRemoveMatch;
-            mySchool.Courses.RemoveAll(predicateMatch);
+            // Predicate<Course> predicateMatch = PredicateRemoveMatch;
+            // mySchool.Courses.RemoveAll(predicateMatch);
+            ShowSchoolCourses(mySchool);    
+            mySchool.Courses.RemoveAll(delegate(Course course){return course.Name == "401";});
+            mySchool.Courses.RemoveAll(curso => curso.Name == "501" && curso.TurnType == TurnType.Night);
 
             ShowSchoolCourses(mySchool);
         }
 
-        private static bool PredicateRemoveMatch(Course course)
-        {
-            return course.Name == "401";
-        }
+        // private static bool PredicateRemoveMatch(Course course)
+        // {
+        //     return course.Name == "401";
+        // }
 
         private static void ShowSchoolCourses(School mySchool)
         {
