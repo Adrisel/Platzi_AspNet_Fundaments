@@ -1,6 +1,7 @@
 ﻿using System;
 using Stage1.Entities;
 using Stage1.App;
+using Stage1.Util;
 
 namespace Stage1
 {
@@ -10,13 +11,15 @@ namespace Stage1
         {
             SchoolEngine engine = new SchoolEngine();
             engine.Init();
+            Printer.PrintTitle("WELCOME TO THE SCHOOL");
             ShowSchoolCourses(engine.School);
+            Printer.Beep();
             
         }
 
         private static void ShowSchoolCourses(School mySchool)
         {
-            System.Console.WriteLine("School Courses-------------------");
+            Printer.PrintTitle("School Courses");
             if (mySchool?.Courses != null)
             {
                 foreach (var course in mySchool.Courses)
