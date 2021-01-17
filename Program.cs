@@ -18,7 +18,7 @@ namespace Stage1
                new Course(){ Name = "301",TurnType = TurnType.Morning}
             };
             // Adds a neew object to the list
-            mySchool.Courses.Add( new Course(){Name = "102", TurnType=TurnType.Afternoon});
+            mySchool.Courses.Add(new Course() { Name = "102", TurnType = TurnType.Afternoon });
 
             // Adds a new collection to the collection 
             List<Course> secondCourse = new List<Course>()
@@ -29,13 +29,22 @@ namespace Stage1
 
             mySchool.Courses.AddRange(secondCourse);
 
+            //Remove a element base on a predicate
+            Predicate<Course> predicateMatch = PredicateRemoveMatch;
+            mySchool.Courses.RemoveAll(predicateMatch);
+
             ShowSchoolCourses(mySchool);
+        }
+
+        private static bool PredicateRemoveMatch(Course course)
+        {
+            return course.Name == "401";
         }
 
         private static void ShowSchoolCourses(School mySchool)
         {
             System.Console.WriteLine("School Courses-------------------");
-            if(mySchool?.Courses != null)
+            if (mySchool?.Courses != null)
             {
                 foreach (var course in mySchool.Courses)
                 {
