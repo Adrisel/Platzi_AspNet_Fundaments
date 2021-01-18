@@ -1,8 +1,10 @@
 namespace Stage1.Entities
 {
     using System.Collections.Generic;
+    using System;
     public class School
     {
+        public string Id { get; private set; } = Guid.NewGuid().ToString();
         string name;
         public string Name
         {
