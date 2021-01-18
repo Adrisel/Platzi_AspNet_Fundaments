@@ -20,6 +20,38 @@ namespace Stage1.App
             AddCourses();
             AddStudents();
             AddSubjects();
+            AddTests();
+        }
+
+        private void AddTests()
+        {
+            foreach(var course in School.Courses)
+            {
+                GenerateTest(course.Subjects, course.Students, course.Name);
+            }
+        }
+
+        private void GenerateTest(List<Subject> subjects, List<Student> students, string courseName)
+        {
+            Random random = new Random();
+            foreach (var student in students)
+            {
+                List<Test> testList = new List<Test>();
+                foreach (var subject in subjects)
+                {
+                    float score = (float)(5 * random.NextDouble());
+                    string studentName = student.Name;
+                    string testName = $"{subject.Name} - {courseName}";
+                    testList.Add(new Test()
+                    { 
+                        Name = testName,
+                        Score = score,
+                        Student = student, 
+                        Subject = subject
+                    });
+                }
+                student.Tests = testList;
+            }
         }
 
         private void AddSubjects()
