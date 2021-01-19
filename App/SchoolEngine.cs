@@ -4,7 +4,7 @@ namespace Stage1.App
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    public class SchoolEngine
+    public sealed class SchoolEngine
     {
         public School School { get; set; }
 
