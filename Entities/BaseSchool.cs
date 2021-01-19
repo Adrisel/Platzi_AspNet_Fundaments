@@ -1,7 +1,7 @@
 using System;
 namespace Stage1.Entities
 {
-    public class BaseSchool
+    public abstract class BaseSchool
     {
         public string Name { get; set; }
         public string  Id { get; private set; }
