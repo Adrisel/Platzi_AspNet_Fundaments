@@ -2,16 +2,8 @@ namespace Stage1.Entities
 {
     using System.Collections.Generic;
     using System;
-    public class School
+    public class School : BaseSchool
     {
-        public string Id { get; private set; } = Guid.NewGuid().ToString();
-        string name;
-        public string Name
-        {
-            get { return name; }
-            set { name = value; }
-        }
-
         public string Country { get; set; }
         public string City { get; set; }
 
@@ -24,16 +16,16 @@ namespace Stage1.Entities
 
         public School(string name, int year)
         {
-            this.name = name;
+            Name = name;
             YearFoundation = year;
         }
 
         // Another way to set the values by the constructor is by tuples
-        public School(string name) => (this.name) = (name);
+        public School(string name) => (Name) = (name);
 
         public School(string name, SchoolType type, string country = "Bolivia", string city = "")
         {
-            (this.name, SchoolType) = (name, type);
+            (Name, SchoolType) = (name, type);
             Country = country;
             City = city;            
         }
