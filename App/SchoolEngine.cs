@@ -21,6 +21,7 @@ namespace Stage1.App
             AddStudents();
             AddSubjects();
             AddTests();
+            School.CleanPlace();
             List<BaseSchool> list = GetObjectsBaseSchool();
         }
 

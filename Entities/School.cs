@@ -1,8 +1,8 @@
 namespace Stage1.Entities
 {
     using System.Collections.Generic;
-    using System;
-    public class School : BaseSchool
+    using Stage1.Entities.Interfaces;
+    public class School : BaseSchool, IPlace
     {
         public string Country { get; set; }
         public string City { get; set; }
@@ -11,6 +11,8 @@ namespace Stage1.Entities
         public int YearFoundation { get; set; }
 
         public List<Course> Courses { get; set; }
+        public string Address { get; set; }
+
         /// The properties are public because behind they set the value to a field, 
         //this is called encapsulation.
 
@@ -37,7 +39,14 @@ namespace Stage1.Entities
             return $"Name: {Name}, Level: {SchoolType} \nCountry: {Country}, City: {City}";
         }
 
-
+        public void CleanPlace()
+        {
+            System.Console.WriteLine("Cleaning School...");
+            foreach (var course in Courses)
+            {
+                course.CleanPlace();
+            }
+        }
     }
 
 }
