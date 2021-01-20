@@ -21,11 +21,28 @@ namespace Stage1.App
             AddStudents();
             AddSubjects();
             AddTests();
+            List<BaseSchool> list = GetObjectsBaseSchool();
         }
 
+        private List<BaseSchool> GetObjectsBaseSchool()
+        { 
+            List<BaseSchool> objectsSchoolList = new List<BaseSchool>();
+            objectsSchoolList.Add(School);
+            objectsSchoolList.AddRange(School.Courses);
+            foreach (var course in School.Courses)
+            {
+                objectsSchoolList.AddRange(course.Subjects);
+                objectsSchoolList.AddRange(course.Students);
+                foreach (var student in course.Students)
+                {
+                    objectsSchoolList.AddRange(student.Tests);
+                }
+            }
+            return objectsSchoolList;
+        }
         private void AddTests()
         {
-            foreach(var course in School.Courses)
+            foreach (var course in School.Courses)
             {
                 GenerateTest(course.Subjects, course.Students, course.Name);
             }
@@ -43,10 +60,10 @@ namespace Stage1.App
                     string studentName = student.Name;
                     string testName = $"{subject.Name} - {courseName}";
                     testList.Add(new Test()
-                    { 
+                    {
                         Name = testName,
                         Score = score,
-                        Student = student, 
+                        Student = student,
                         Subject = subject
                     });
                 }
@@ -75,19 +92,19 @@ namespace Stage1.App
             Random random = new Random();
             foreach (var course in School.Courses)
             {
-                int numeberOfStudent = random.Next(5,20);
+                int numeberOfStudent = random.Next(5, 20);
                 course.Students = GenerateStudents(numeberOfStudent);
             }
         }
 
-        private List<Student> GenerateStudents( int quantity)
+        private List<Student> GenerateStudents(int quantity)
         {
-            string[] name1 = new string[]{"Adriana","Marcia", "Ronald", "Mauricio", "Daniel"};
-            string[] name2 = new string[]{"Tito","Camacho", "Sanchez", "Salazar", "Orellana"};
+            string[] name1 = new string[] { "Adriana", "Marcia", "Ronald", "Mauricio", "Daniel" };
+            string[] name2 = new string[] { "Tito", "Camacho", "Sanchez", "Salazar", "Orellana" };
 
             var studentsList = from n1 in name1
                                from n2 in name2
-                               select new Student(){Name = $"{n1} {n2}"};
+                               select new Student() { Name = $"{n1} {n2}" };
             return studentsList.OrderBy(std => std.Id).Take(quantity).ToList();
         }
 
