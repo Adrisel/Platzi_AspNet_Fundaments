@@ -26,7 +26,7 @@ namespace Stage1.App
         }
 
         private List<BaseSchool> GetObjectsBaseSchool()
-        { 
+        {
             List<BaseSchool> objectsSchoolList = new List<BaseSchool>();
             objectsSchoolList.Add(School);
             objectsSchoolList.AddRange(School.Courses);
@@ -41,14 +41,17 @@ namespace Stage1.App
             }
             return objectsSchoolList;
         }
-        private void AddTests()
+#region Generate
+        private List<Student> GenerateStudents(int quantity)
         {
-            foreach (var course in School.Courses)
-            {
-                GenerateTest(course.Subjects, course.Students, course.Name);
-            }
-        }
+            string[] name1 = new string[] { "Adriana", "Marcia", "Ronald", "Mauricio", "Daniel" };
+            string[] name2 = new string[] { "Tito", "Camacho", "Sanchez", "Salazar", "Orellana" };
 
+            var studentsList = from n1 in name1
+                               from n2 in name2
+                               select new Student() { Name = $"{n1} {n2}" };
+            return studentsList.OrderBy(std => std.Id).Take(quantity).ToList();
+        }
         private void GenerateTest(List<Subject> subjects, List<Student> students, string courseName)
         {
             Random random = new Random();
@@ -71,7 +74,16 @@ namespace Stage1.App
                 student.Tests = testList;
             }
         }
+#endregion
 
+#region Add to School
+        private void AddTests()
+        {
+            foreach (var course in School.Courses)
+            {
+                GenerateTest(course.Subjects, course.Students, course.Name);
+            }
+        }
         private void AddSubjects()
         {
             foreach (var course in School.Courses)
@@ -98,17 +110,6 @@ namespace Stage1.App
             }
         }
 
-        private List<Student> GenerateStudents(int quantity)
-        {
-            string[] name1 = new string[] { "Adriana", "Marcia", "Ronald", "Mauricio", "Daniel" };
-            string[] name2 = new string[] { "Tito", "Camacho", "Sanchez", "Salazar", "Orellana" };
-
-            var studentsList = from n1 in name1
-                               from n2 in name2
-                               select new Student() { Name = $"{n1} {n2}" };
-            return studentsList.OrderBy(std => std.Id).Take(quantity).ToList();
-        }
-
         private void AddCourses()
         {
             School.Courses = new List<Course>
@@ -121,4 +122,5 @@ namespace Stage1.App
             };
         }
     }
+#endregion
 }
