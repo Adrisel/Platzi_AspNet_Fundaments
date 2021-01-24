@@ -21,7 +21,7 @@ namespace Stage1.App
             AddSubjects();
             AddTests();
             School.CleanPlace();
-            List<BaseSchool> list = GetObjectsBaseSchool(
+            IReadOnlyList<BaseSchool> list = GetObjectsBaseSchool(
                 out int numberCourses,
                 out int numberSubjects,
                 out int numberStudents,
@@ -32,7 +32,7 @@ namespace Stage1.App
         }
         // If we want the same functionality but with different parameters we can overload the method
         // declare the same name method with different paramenters
-        private List<BaseSchool> GetObjectsBaseSchool( 
+        private IReadOnlyList<BaseSchool> GetObjectsBaseSchool( 
             bool courses = true,
             bool subjects = true,
             bool students = true,
@@ -50,7 +50,7 @@ namespace Stage1.App
                 tests);
         }
 
-        private List<BaseSchool> GetObjectsBaseSchool(
+        private IReadOnlyList<BaseSchool> GetObjectsBaseSchool(
             out int numberOfCourses,
             bool courses = true,
             bool subjects = true,
@@ -69,7 +69,7 @@ namespace Stage1.App
                 tests);
         }
 
-        private List<BaseSchool> GetObjectsBaseSchool(
+        private IReadOnlyList<BaseSchool> GetObjectsBaseSchool(
             out int numberOfCourses,
             out int numberOfSubjects,
             out int numberOfStudents,
@@ -109,7 +109,7 @@ namespace Stage1.App
                     }
                 }
             }
-            return objectsSchoolList;
+            return objectsSchoolList.AsReadOnly();
         }
         #region Generate
         private List<Student> GenerateStudents(int quantity)
