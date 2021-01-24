@@ -21,43 +21,59 @@ namespace Stage1.App
             AddSubjects();
             AddTests();
             School.CleanPlace();
-            List<BaseSchool> list = GetObjectsBaseSchool(tests:false, students: false);
+            List<BaseSchool> list = GetObjectsBaseSchool(
+                out int numberCourses,
+                out int numberSubjects,
+                out int numberStudents,
+                out int numberTest,
+                tests: false,
+                students: false);
+            Console.WriteLine($"Courses: {numberCourses} Subjects: {numberSubjects}");
         }
 
         private List<BaseSchool> GetObjectsBaseSchool(
+            out int numberOfCourses,
+            out int numberOfSubjects,
+            out int numberOfStudents,
+            out int numberOfTests,
             bool courses = true,
             bool subjects = true,
             bool students = true,
             bool tests = true
         )
         {
+            numberOfCourses = numberOfStudents = numberOfSubjects = numberOfTests = 0;
             List<BaseSchool> objectsSchoolList = new List<BaseSchool>();
             objectsSchoolList.Add(School);
             if (courses)
             {
                 objectsSchoolList.AddRange(School.Courses);
+                numberOfCourses = School.Courses.Count;
             }
             foreach (var course in School.Courses)
             {
                 if (subjects)
                 {
                     objectsSchoolList.AddRange(course.Subjects);
+                    numberOfSubjects += course.Subjects.Count;
                 }
                 if (students)
                 {
                     objectsSchoolList.AddRange(course.Students);
+                    numberOfStudents += course.Students.Count;
                 }
-                 if (tests)
+                if (tests)
                 {
                     foreach (var student in course.Students)
                     {
-                            objectsSchoolList.AddRange(student.Tests);
+                        objectsSchoolList.AddRange(student.Tests);
+                        numberOfTests += student.Tests.Count;
                     }
                 }
             }
             return objectsSchoolList;
         }
-#region Generate
+        #region Generate
         private List<Student> GenerateStudents(int quantity)
         {
             string[] name1 = new string[] { "Adriana", "Marcia", "Ronald", "Mauricio", "Daniel" };
@@ -90,9 +106,9 @@ namespace Stage1.App
                 student.Tests = testList;
             }
         }
-#endregion
+        #endregion
 
-#region Add to School
+        #region Add to School
         private void AddTests()
         {
             foreach (var course in School.Courses)
@@ -138,5 +154,5 @@ namespace Stage1.App
             };
         }
     }
-#endregion
+    #endregion
 }
