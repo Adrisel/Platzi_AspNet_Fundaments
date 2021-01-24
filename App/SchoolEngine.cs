@@ -3,6 +3,7 @@ using System.Reflection.Metadata.Ecma335;
 namespace Stage1.App
 {
     using Stage1.Entities;
+    using Stage1.Entities.Constats;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -36,8 +37,8 @@ namespace Stage1.App
         public Dictionary<string, IEnumerable<BaseSchool>> GetObjectDictionary()
         {
             Dictionary<string, IEnumerable<BaseSchool>> dictionary = new Dictionary<string, IEnumerable<BaseSchool>>();
-            dictionary.Add("school",new BaseSchool[]{School});
-            dictionary.Add("courses", School.Courses.Cast<BaseSchool>());
+            dictionary.Add(DictionaryKeys.SCHOOL,new BaseSchool[]{School});
+            dictionary.Add(DictionaryKeys.COURSE, School.Courses.Cast<BaseSchool>());
 
             return dictionary;
         }
