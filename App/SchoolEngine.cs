@@ -30,6 +30,44 @@ namespace Stage1.App
                 students: false);
             Console.WriteLine($"Courses: {numberCourses} Subjects: {numberSubjects}");
         }
+        // If we want the same functionality but with different parameters we can overload the method
+        // declare the same name method with different paramenters
+        private List<BaseSchool> GetObjectsBaseSchool( 
+            bool courses = true,
+            bool subjects = true,
+            bool students = true,
+            bool tests = true
+        )
+        {
+            return GetObjectsBaseSchool(
+                out int dummy,
+                out dummy,
+                out dummy,
+                out dummy,
+                courses,
+                subjects,
+                students,
+                tests);
+        }
+
+        private List<BaseSchool> GetObjectsBaseSchool(
+            out int numberOfCourses,
+            bool courses = true,
+            bool subjects = true,
+            bool students = true,
+            bool tests = true
+        )
+        {
+            return GetObjectsBaseSchool(
+                out numberOfCourses,
+                out int dummy,
+                out dummy,
+                out dummy,
+                courses,
+                subjects,
+                students,
+                tests);
+        }
 
         private List<BaseSchool> GetObjectsBaseSchool(
             out int numberOfCourses,
