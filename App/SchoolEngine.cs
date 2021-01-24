@@ -1,3 +1,5 @@
+using System.Reflection.Metadata.Ecma335;
+
 namespace Stage1.App
 {
     using Stage1.Entities;
@@ -30,9 +32,20 @@ namespace Stage1.App
                 students: false);
             Console.WriteLine($"Courses: {numberCourses} Subjects: {numberSubjects}");
         }
+
+        public Dictionary<string, IEnumerable<BaseSchool>> GetObjectDictionary()
+        {
+            Dictionary<string, IEnumerable<BaseSchool>> dictionary = new Dictionary<string, IEnumerable<BaseSchool>>();
+            dictionary.Add("school",new BaseSchool[]{School});
+            dictionary.Add("courses", School.Courses.Cast<BaseSchool>());
+
+            return dictionary;
+        }
+
+        #region Overloaded methods
         // If we want the same functionality but with different parameters we can overload the method
         // declare the same name method with different paramenters
-        private IReadOnlyList<BaseSchool> GetObjectsBaseSchool( 
+        private IReadOnlyList<BaseSchool> GetObjectsBaseSchool(
             bool courses = true,
             bool subjects = true,
             bool students = true,
@@ -111,6 +124,8 @@ namespace Stage1.App
             }
             return objectsSchoolList.AsReadOnly();
         }
+        #endregion
+
         #region Generate
         private List<Student> GenerateStudents(int quantity)
         {
@@ -191,6 +206,6 @@ namespace Stage1.App
                new Course(){ Name = "501",TurnType = TurnType.Morning}
             };
         }
+        #endregion
     }
-    #endregion
 }
