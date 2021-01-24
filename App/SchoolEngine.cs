@@ -10,7 +10,6 @@ namespace Stage1.App
 
         public SchoolEngine()
         {
-
         }
 
         public void Init()
@@ -22,21 +21,38 @@ namespace Stage1.App
             AddSubjects();
             AddTests();
             School.CleanPlace();
-            List<BaseSchool> list = GetObjectsBaseSchool();
+            List<BaseSchool> list = GetObjectsBaseSchool(tests:false, students: false);
         }
 
-        private List<BaseSchool> GetObjectsBaseSchool()
+        private List<BaseSchool> GetObjectsBaseSchool(
+            bool courses = true,
+            bool subjects = true,
+            bool students = true,
+            bool tests = true
+        )
         {
             List<BaseSchool> objectsSchoolList = new List<BaseSchool>();
             objectsSchoolList.Add(School);
-            objectsSchoolList.AddRange(School.Courses);
+            if (courses)
+            {
+                objectsSchoolList.AddRange(School.Courses);
+            }
             foreach (var course in School.Courses)
             {
-                objectsSchoolList.AddRange(course.Subjects);
-                objectsSchoolList.AddRange(course.Students);
-                foreach (var student in course.Students)
+                if (subjects)
                 {
-                    objectsSchoolList.AddRange(student.Tests);
+                    objectsSchoolList.AddRange(course.Subjects);
+                }
+                if (students)
+                {
+                    objectsSchoolList.AddRange(course.Students);
+                }
+                 if (tests)
+                {
+                    foreach (var student in course.Students)
+                    {
+                            objectsSchoolList.AddRange(student.Tests);
+                    }
                 }
             }
             return objectsSchoolList;
