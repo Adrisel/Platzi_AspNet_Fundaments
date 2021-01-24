@@ -34,11 +34,11 @@ namespace Stage1.App
             Console.WriteLine($"Courses: {numberCourses} Subjects: {numberSubjects}");
         }
 
-        public Dictionary<string, IEnumerable<BaseSchool>> GetObjectDictionary()
+        public Dictionary<DictionaryKey, IEnumerable<BaseSchool>> GetObjectDictionary()
         {
-            Dictionary<string, IEnumerable<BaseSchool>> dictionary = new Dictionary<string, IEnumerable<BaseSchool>>();
-            dictionary.Add(DictionaryKeys.SCHOOL,new BaseSchool[]{School});
-            dictionary.Add(DictionaryKeys.COURSE, School.Courses.Cast<BaseSchool>());
+            Dictionary<DictionaryKey, IEnumerable<BaseSchool>> dictionary = new Dictionary<DictionaryKey, IEnumerable<BaseSchool>>();
+            dictionary.Add(DictionaryKey.School,new BaseSchool[]{School});
+            dictionary.Add(DictionaryKey.Course, School.Courses.Cast<BaseSchool>());
 
             return dictionary;
         }
