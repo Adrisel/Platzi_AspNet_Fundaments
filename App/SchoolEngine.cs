@@ -32,6 +32,8 @@ namespace Stage1.App
                 tests: false,
                 students: false);
             Console.WriteLine($"Courses: {numberCourses} Subjects: {numberSubjects}");
+
+            var dictionaryResult = GetObjectDictionary();
         }
 
         public Dictionary<DictionaryKey, IEnumerable<BaseSchool>> GetObjectDictionary()
@@ -40,6 +42,19 @@ namespace Stage1.App
             dictionary.Add(DictionaryKey.School,new BaseSchool[]{School});
             dictionary.Add(DictionaryKey.Course, School.Courses.Cast<BaseSchool>());
 
+
+            var subjectsTemp = new List<Subject>();
+            var studentsTemp = new List<Student>();
+            var testsTemp = new List<Test>();
+            foreach (var course in School.Courses)
+            {
+                subjectsTemp.AddRange(course.Subjects);
+                studentsTemp.AddRange(course.Students);
+                course.Students.ForEach(x => testsTemp.AddRange(x.Tests));
+            }
+            dictionary.Add(DictionaryKey.Subject, subjectsTemp);
+            dictionary.Add(DictionaryKey.Student, studentsTemp);
+            dictionary.Add(DictionaryKey.Test, testsTemp);
             return dictionary;
         }
 

@@ -4,7 +4,7 @@ namespace Stage1.Entities.Constats
     {
         School,
         Course,
-        Subject,
+        Subject, 
         Student,
         Test
     }
