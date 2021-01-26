@@ -195,7 +195,7 @@ namespace Stage1.App
                 List<Test> testList = new List<Test>();
                 foreach (var subject in subjects)
                 {
-                    float score = MathF.Round((float)(5 * random.NextDouble()), 2);
+                    float score = MathF.Round(5 *(float)random.NextDouble(), 2);
                     string studentName = student.Name;
                     string testName = $"{subject.Name} - {courseName}";
                     testList.Add(new Test()
