@@ -4,6 +4,7 @@ namespace Stage1.App
 {
     using Stage1.Entities;
     using Stage1.Entities.Constats;
+    using Stage1.Util;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -32,8 +33,6 @@ namespace Stage1.App
                 tests: false,
                 students: false);
             Console.WriteLine($"Courses: {numberCourses} Subjects: {numberSubjects}");
-
-            var dictionaryResult = GetObjectDictionary();
         }
 
         public Dictionary<DictionaryKey, IEnumerable<BaseSchool>> GetObjectDictionary()
@@ -56,6 +55,32 @@ namespace Stage1.App
             dictionary.Add(DictionaryKey.Student, studentsTemp);
             dictionary.Add(DictionaryKey.Test, testsTemp);
             return dictionary;
+        }
+
+        public void PrintDictionary(Dictionary<DictionaryKey, IEnumerable<BaseSchool>> dictionary, bool printTest = false)
+        {
+            foreach (var obj in dictionary)
+            {
+                Printer.PrintTitle(obj.Key.ToString());
+                foreach (var value in obj.Value)
+                {
+                    if(value is Test)
+                    {
+                        if(printTest)
+                            Console.WriteLine($"{obj.Key}: {value}");
+                    }
+                    else if(value is Student)
+                    {
+                        Console.WriteLine($"{obj.Key}: {value.Name}");
+                    }
+                    else if(value is Subject)
+                    {
+                        Console.WriteLine($"{obj.Key}: {value.Name}");
+                    }
+                    else
+                        Console.WriteLine($"{obj.Key}: {value}");
+                }
+            }
         }
 
         #region Overloaded methods

@@ -14,7 +14,8 @@ namespace Stage1
             Printer.PrintTitle("WELCOME TO THE SCHOOL");
             ShowSchoolCourses(engine.School);
             Printer.Beep();
-            
+            var dictionaryResult = engine.GetObjectDictionary();
+            engine.PrintDictionary(dictionaryResult);
         }
 
         private static void ShowSchoolCourses(School mySchool)
