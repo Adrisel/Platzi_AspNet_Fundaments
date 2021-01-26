@@ -15,7 +15,7 @@ namespace Stage1
             ShowSchoolCourses(engine.School);
             Printer.Beep();
             var dictionaryResult = engine.GetObjectDictionary();
-            engine.PrintDictionary(dictionaryResult);
+            engine.PrintDictionary(dictionaryResult, true);
         }
 
         private static void ShowSchoolCourses(School mySchool)

@@ -64,21 +64,30 @@ namespace Stage1.App
                 Printer.PrintTitle(obj.Key.ToString());
                 foreach (var value in obj.Value)
                 {
-                    if(value is Test)
+                    switch (obj.Key)
                     {
-                        if(printTest)
+                        case DictionaryKey.Test:
+                            if (printTest)
+                                Console.WriteLine($"{obj.Key}: {value}");
+                            break;
+                        case DictionaryKey.Student:
+                            Console.WriteLine($"{obj.Key}: {value.Name}");
+                            break;
+                        case DictionaryKey.Subject:
+                            Console.WriteLine($"{obj.Key}: {value.Name}");
+                            break;
+                        case DictionaryKey.Course:
+                            var course = value as Course;
+                            if(course!=null)
+                            {
+                                int count = course.Students.Count;
+                                Console.WriteLine($"{obj.Key}: {value.Name} Number of students: {count}");
+                            }
+                            break;
+                        default:
                             Console.WriteLine($"{obj.Key}: {value}");
+                            break;
                     }
-                    else if(value is Student)
-                    {
-                        Console.WriteLine($"{obj.Key}: {value.Name}");
-                    }
-                    else if(value is Subject)
-                    {
-                        Console.WriteLine($"{obj.Key}: {value.Name}");
-                    }
-                    else
-                        Console.WriteLine($"{obj.Key}: {value}");
                 }
             }
         }
@@ -186,7 +195,7 @@ namespace Stage1.App
                 List<Test> testList = new List<Test>();
                 foreach (var subject in subjects)
                 {
-                    float score = (float)(5 * random.NextDouble());
+                    float score = MathF.Round((float)(5 * random.NextDouble()), 2);
                     string studentName = student.Name;
                     string testName = $"{subject.Name} - {courseName}";
                     testList.Add(new Test()
