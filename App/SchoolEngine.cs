@@ -19,7 +19,6 @@ namespace Stage1.App
         public void Init()
         {
             School = new School("Platzi Academy", SchoolType.Elementary, city: "La Paz");
-
             AddCourses();
             AddStudents();
             AddSubjects();

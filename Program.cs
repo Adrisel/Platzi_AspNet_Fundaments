@@ -2,6 +2,7 @@
 using Stage1.Entities;
 using Stage1.App;
 using Stage1.Util;
+using System.Collections.Generic;
 
 namespace Stage1
 {
@@ -18,6 +19,10 @@ namespace Stage1
             // If you want to unsubscribe to an event 
             AppDomain.CurrentDomain.ProcessExit -= EventAction;
 
+            Course course = new Course();
+            course.Students = new List<Student>();
+            course.StudentAddedProcessCompleted += NewStudentAdded;
+
             SchoolEngine engine = new SchoolEngine();
             engine.Init();
             Printer.PrintTitle("WELCOME TO THE SCHOOL");
@@ -25,6 +30,13 @@ namespace Stage1
             Printer.Beep();
             var dictionaryResult = engine.GetObjectDictionary();
             engine.PrintDictionary(dictionaryResult, true);
+            course.AddStudent("Selina");
+
+        }
+
+        private static void NewStudentAdded(object sender, EventArgs e)
+        {
+            Printer.PrintTitle("There is a new student in the school");
         }
 
         private static void EventAction(object sender, EventArgs e)
