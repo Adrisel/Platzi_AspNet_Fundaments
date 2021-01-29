@@ -4,13 +4,14 @@ namespace Stage1.App
 {
     using Stage1.Entities;
     using Stage1.Entities.Constats;
+    using Stage1.Entities.EventArgsModels;
     using Stage1.Util;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     public class SchoolEngine
     {
-        public delegate void NewCourseAddedEventHandler(object source, EventArgs args);
+        public delegate void NewCourseAddedEventHandler(object source, CourseEventArgs args);
         public event NewCourseAddedEventHandler AddCourseProcess;
         public School School { get; set; }
 
@@ -36,12 +37,14 @@ namespace Stage1.App
             Console.WriteLine($"Courses: {numberCourses} Subjects: {numberSubjects}");
         }
 
-        
+
         #region Eventos
-        protected virtual void OnAddCourseProcess()
+        protected virtual void OnAddCourseProcess(string name, string address, TurnType turn)
         {
-            if(AddCourseProcess !=null)
-                AddCourseProcess.Invoke(this, EventArgs.Empty);
+            if (AddCourseProcess != null)
+                AddCourseProcess.Invoke(
+                    this,
+                    new CourseEventArgs() { Name = name, Address = address, Turn = turn });
         }
         public void AddCourse(string courseName, string address, TurnType turnType)
         {
@@ -51,10 +54,10 @@ namespace Stage1.App
                 Address = address,
                 TurnType = turnType
             });
-            OnAddCourseProcess();
+            OnAddCourseProcess(courseName, address, turnType);
         }
         #endregion
-        
+
         #region Dictionary
         public Dictionary<DictionaryKey, IEnumerable<BaseSchool>> GetObjectDictionary()
         {

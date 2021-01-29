@@ -2,8 +2,7 @@
 using Stage1.Entities;
 using Stage1.App;
 using Stage1.Util;
-using System.Collections.Generic;
-using System.Reflection.Metadata.Ecma335;
+using Stage1.Entities.EventArgsModels;
 
 namespace Stage1
 {
@@ -35,9 +34,9 @@ namespace Stage1
         }
 
         // This is what will happen when the publisher notifies when a course is added
-        private static void AddCourseEventAction(object source, EventArgs args)
+        private static void AddCourseEventAction(object source, CourseEventArgs args)
         {
-            Printer.PrintTitle("A new Course was added to the School");
+            Printer.PrintTitle($"A new Course was added to the School \nCourse: {args.Name} \nAddress: {args.Address}");
         }
 
         private static void NewStudentAdded(object sender, EventArgs e)
