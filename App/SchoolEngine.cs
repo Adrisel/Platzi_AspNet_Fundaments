@@ -8,8 +8,10 @@ namespace Stage1.App
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    public sealed class SchoolEngine
+    public class SchoolEngine
     {
+        public delegate void NewCourseAddedEventHandler(object source, EventArgs args);
+        public event NewCourseAddedEventHandler AddCourseProcess;
         public School School { get; set; }
 
         public SchoolEngine()
@@ -34,10 +36,30 @@ namespace Stage1.App
             Console.WriteLine($"Courses: {numberCourses} Subjects: {numberSubjects}");
         }
 
+        
+        #region Eventos
+        protected virtual void OnAddCourseProcess()
+        {
+            if(AddCourseProcess !=null)
+                AddCourseProcess.Invoke(this, EventArgs.Empty);
+        }
+        public void AddCourse(string courseName, string address, TurnType turnType)
+        {
+            School.Courses.Add(new Course()
+            {
+                Name = courseName,
+                Address = address,
+                TurnType = turnType
+            });
+            OnAddCourseProcess();
+        }
+        #endregion
+        
+        #region Dictionary
         public Dictionary<DictionaryKey, IEnumerable<BaseSchool>> GetObjectDictionary()
         {
             Dictionary<DictionaryKey, IEnumerable<BaseSchool>> dictionary = new Dictionary<DictionaryKey, IEnumerable<BaseSchool>>();
-            dictionary.Add(DictionaryKey.School,new BaseSchool[]{School});
+            dictionary.Add(DictionaryKey.School, new BaseSchool[] { School });
             dictionary.Add(DictionaryKey.Course, School.Courses.Cast<BaseSchool>());
 
 
@@ -55,7 +77,6 @@ namespace Stage1.App
             dictionary.Add(DictionaryKey.Test, testsTemp);
             return dictionary;
         }
-
         public void PrintDictionary(Dictionary<DictionaryKey, IEnumerable<BaseSchool>> dictionary, bool printTest = false)
         {
             foreach (var obj in dictionary)
@@ -77,7 +98,7 @@ namespace Stage1.App
                             break;
                         case DictionaryKey.Course:
                             var course = value as Course;
-                            if(course!=null)
+                            if (course != null)
                             {
                                 int count = course.Students.Count;
                                 Console.WriteLine($"{obj.Key}: {value.Name} Number of students: {count}");
@@ -90,6 +111,7 @@ namespace Stage1.App
                 }
             }
         }
+        #endregion
 
         #region Overloaded methods
         // If we want the same functionality but with different parameters we can overload the method
@@ -194,7 +216,7 @@ namespace Stage1.App
                 List<Test> testList = new List<Test>();
                 foreach (var subject in subjects)
                 {
-                    float score = MathF.Round(5 *(float)random.NextDouble(), 2);
+                    float score = MathF.Round(5 * (float)random.NextDouble(), 2);
                     string studentName = student.Name;
                     string testName = $"{subject.Name} - {courseName}";
                     testList.Add(new Test()

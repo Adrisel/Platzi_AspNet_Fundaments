@@ -3,6 +3,7 @@ using Stage1.Entities;
 using Stage1.App;
 using Stage1.Util;
 using System.Collections.Generic;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Stage1
 {
@@ -19,19 +20,24 @@ namespace Stage1
             // If you want to unsubscribe to an event 
             AppDomain.CurrentDomain.ProcessExit -= EventAction;
 
-            Course course = new Course();
-            course.Students = new List<Student>();
-            course.StudentAddedProcessCompleted += NewStudentAdded;
-
             SchoolEngine engine = new SchoolEngine();
             engine.Init();
             Printer.PrintTitle("WELCOME TO THE SCHOOL");
             ShowSchoolCourses(engine.School);
             Printer.Beep();
             var dictionaryResult = engine.GetObjectDictionary();
-            engine.PrintDictionary(dictionaryResult, true);
-            course.AddStudent("Selina");
+            // engine.PrintDictionary(dictionaryResult, true);
 
+            // here we are subscribing to the event when a new course is added
+            engine.AddCourseProcess += AddCourseEventAction;
+            engine.AddCourse("601", "Cochabamba", TurnType.Morning);
+
+        }
+
+        // This is what will happen when the publisher notifies when a course is added
+        private static void AddCourseEventAction(object source, EventArgs args)
+        {
+            Printer.PrintTitle("A new Course was added to the School");
         }
 
         private static void NewStudentAdded(object sender, EventArgs e)
