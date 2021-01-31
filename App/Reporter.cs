@@ -78,5 +78,19 @@ namespace Stage1.App
 
             return studentAverageBySubjectDictionary;
         }
+
+        public Dictionary<string, IEnumerable<StudentAverange>> GetTopScoresBySubject(int numberOfTop = 1)
+        {
+            var topScoresList = new Dictionary<string, IEnumerable<StudentAverange>>();
+            var testBySubjectAndStudent = GetStudentAverageBySubject();
+            foreach (var evalBySubject in testBySubjectAndStudent)
+            {
+                var orderedList = (from eval in evalBySubject.Value
+                                  orderby eval.Average descending
+                                  select eval).Take(numberOfTop);
+                topScoresList.Add(evalBySubject.Key,orderedList);
+            }
+            return topScoresList;
+        }
     }
 }

@@ -37,6 +37,7 @@ namespace Stage1
             var subjectReport = reporter.GetListSubject();
             var testBySubject = reporter.GetTestsBySubject();
             var test = reporter.GetStudentAverageBySubject();
+            var top = reporter.GetTopScoresBySubject(4);
 
 
         }
