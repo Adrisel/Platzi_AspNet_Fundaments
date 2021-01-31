@@ -31,6 +31,14 @@ namespace Stage1
             engine.AddCourseProcess += AddCourseEventAction;
             engine.AddCourse("601", "Cochabamba", TurnType.Morning);
 
+            //reporter
+            Reporter reporter = new Reporter(dictionaryResult);
+            var testReport = reporter.GetListTest();
+            var subjectReport = reporter.GetListSubject();
+            var testBySubject = reporter.GetTestsBySubject();
+            var test = reporter.GetStudentAverageBySubject();
+
+
         }
 
         // This is what will happen when the publisher notifies when a course is added

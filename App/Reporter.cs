@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -15,19 +16,67 @@ namespace Stage1.App
             _dictionary = dictionary;
         }
 
-        public IEnumerable<School> GetListTest()
+        public IEnumerable<Test> GetListTest()
         {
-            IEnumerable<School> list;
-            if (_dictionary.TryGetValue(DictionaryKey.School, out IEnumerable<BaseSchool> School))
+            if (_dictionary.TryGetValue(DictionaryKey.Test, out IEnumerable<BaseSchool> TestsList))
             {
-                list = School.Cast<School>();
+                return TestsList.Cast<Test>();
             }
             else
             {
-                list = null;
+                return new List<Test>();
+            }
+        }
+
+        public IEnumerable<string> GetListSubject()
+        {
+           return  GetListSubject(out var dummy);
+        }
+
+        public IEnumerable<string> GetListSubject(out IEnumerable<Test> testList)
+        {
+           testList = GetListTest();
+
+           return (from test in testList
+                  select test.Subject.Name).Distinct();
+        }
+
+        public Dictionary<string, IEnumerable<Test>> GetTestsBySubject()
+        {
+            var dictionary = new  Dictionary<string, IEnumerable<Test>>();
+            var subjectsList = GetListSubject(out IEnumerable<Test> testsList);
+
+            foreach (var subject in subjectsList)
+            {
+                var testListBySubject = from test in testsList
+                                        where test.Subject.Name == subject
+                                        select test;
+                dictionary.Add(subject, testListBySubject);
+            }
+            return dictionary;
+        }
+
+        public Dictionary<string, IEnumerable<StudentAverange>> GetStudentAverageBySubject()
+        {
+            var studentAverageBySubjectDictionary =  new Dictionary<string, IEnumerable<StudentAverange>>();
+            var testDictionaryBySubject = GetTestsBySubject();
+
+            foreach (var evalBySubject in testDictionaryBySubject)
+            {
+                var studentAverange = from eval in evalBySubject.Value
+                            group eval by new {eval.Student.Id, eval.Student.Name}
+                            into evalStudentGroup
+                            select new StudentAverange
+                            { 
+                                StudentId = evalStudentGroup.Key.Id,
+                                StudentName = evalStudentGroup.Key.Name,
+                                Average = evalStudentGroup.Average(x => x.Score)
+                            };
+
+                studentAverageBySubjectDictionary.Add(evalBySubject.Key, studentAverange);
             }
 
-            return list;
+            return studentAverageBySubjectDictionary;
         }
     }
 }
