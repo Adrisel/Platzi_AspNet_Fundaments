@@ -30,27 +30,24 @@ namespace Stage1.App
 
         public IEnumerable<string> GetListSubject()
         {
-           return  GetListSubject(out var dummy);
+            return GetListSubject(out var dummy);
         }
 
         public IEnumerable<string> GetListSubject(out IEnumerable<Test> testList)
         {
-           testList = GetListTest();
+            testList = GetListTest();
 
-           return (from test in testList
-                  select test.Subject.Name).Distinct();
+            return testList.Select(x => x.Subject.Name).Distinct();
         }
 
         public Dictionary<string, IEnumerable<Test>> GetTestsBySubject()
         {
-            var dictionary = new  Dictionary<string, IEnumerable<Test>>();
+            var dictionary = new Dictionary<string, IEnumerable<Test>>();
             var subjectsList = GetListSubject(out IEnumerable<Test> testsList);
 
             foreach (var subject in subjectsList)
             {
-                var testListBySubject = from test in testsList
-                                        where test.Subject.Name == subject
-                                        select test;
+                var testListBySubject = testsList.Where(x => x.Subject.Name == subject);
                 dictionary.Add(subject, testListBySubject);
             }
             return dictionary;
@@ -58,24 +55,27 @@ namespace Stage1.App
 
         public Dictionary<string, IEnumerable<StudentAverange>> GetStudentAverageBySubject()
         {
-            var studentAverageBySubjectDictionary =  new Dictionary<string, IEnumerable<StudentAverange>>();
+            var studentAverageBySubjectDictionary = new Dictionary<string, IEnumerable<StudentAverange>>();
             var testDictionaryBySubject = GetTestsBySubject();
 
             foreach (var evalBySubject in testDictionaryBySubject)
             {
-                var studentAverange = from eval in evalBySubject.Value
-                            group eval by new {eval.Student.Id, eval.Student.Name}
-                            into evalStudentGroup
-                            select new StudentAverange
-                            { 
-                                StudentId = evalStudentGroup.Key.Id,
-                                StudentName = evalStudentGroup.Key.Name,
-                                Average = evalStudentGroup.Average(x => x.Score)
-                            };
 
+                var studentA = evalBySubject.Value.GroupBy(x => x.Student.Name);
+                List<StudentAverange> studentAverange = new List<StudentAverange>();
+                foreach (var studentScore in studentA)
+                {
+                    float average = studentScore.Average(x => x.Score);
+                    string id = studentScore.First().Student.Id;
+                    studentAverange.Add(new StudentAverange
+                    {
+                        StudentId = id,
+                        StudentName = studentScore.Key,
+                        Average = average
+                    });
+                }
                 studentAverageBySubjectDictionary.Add(evalBySubject.Key, studentAverange);
             }
-
             return studentAverageBySubjectDictionary;
         }
 
@@ -85,10 +85,9 @@ namespace Stage1.App
             var testBySubjectAndStudent = GetStudentAverageBySubject();
             foreach (var evalBySubject in testBySubjectAndStudent)
             {
-                var orderedList = (from eval in evalBySubject.Value
-                                  orderby eval.Average descending
-                                  select eval).Take(numberOfTop);
-                topScoresList.Add(evalBySubject.Key,orderedList);
+                var orderedList = evalBySubject.Value.OrderByDescending(x => x.Average)
+                                                     .Take(numberOfTop);
+                topScoresList.Add(evalBySubject.Key, orderedList);
             }
             return topScoresList;
         }
